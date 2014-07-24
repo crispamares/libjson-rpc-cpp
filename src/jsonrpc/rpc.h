@@ -21,6 +21,11 @@
   #include "connectors/httpclient.h"
 #endif
 
+#ifdef ZMQ_CONNECTOR
+//  #include "connectors/zmqserver.h"
+  #include "connectors/zmqclient.h"
+#endif
+
 #include "specificationparser.h"
 #include "specificationwriter.h"
 

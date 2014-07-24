@@ -15,7 +15,7 @@ if(ZMQ_CONNECTOR)
 	file(GLOB connector_cppzmq_header connectors/zmq.hpp)
 	file(GLOB connector_zmq_source connectors/zmq*.c*)
 	file(GLOB connector_zmq_header connectors/zmq*.h)
-	set(JSONRPC_DEPENDENCIES ${JSONRPC_DEPENDENCIES} ${ZMQ_LIBRARIES})
+	set(JSONRPC_DEPENDENCIES ${JSONRPC_DEPENDENCIES} ${ZMQ_LIBRARIES} zmq dl)
 endif()
 
 file(GLOB jsoncpp_header json/*.h)
@@ -39,7 +39,7 @@ target_link_libraries(jsonrpcStatic ${JSONRPC_DEPENDENCIES})
 
 install(FILES ${jsonrpc_header} DESTINATION include/jsonrpc)
 install(FILES ${jsoncpp_header} DESTINATION include/jsonrpc/json)
-if(HTTP_CONNECTOR or ZMQ_CONNECTOR)
+if(HTTP_CONNECTOR OR ZMQ_CONNECTOR)
 	install(FILES ${connectors_header} DESTINATION include/jsonrpc/connectors)
 endif()
 
