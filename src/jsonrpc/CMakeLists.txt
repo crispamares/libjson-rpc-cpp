@@ -11,10 +11,17 @@ if(HTTP_CONNECTOR)
 	set(JSONRPC_DEPENDENCIES ${JSONRPC_DEPENDENCIES} ${CURL_LIBRARIES} pthread dl)
 endif()
 
+if(ZMQ_CONNECTOR)
+	file(GLOB connector_cppzmq_header connectors/zmq.hpp)
+	file(GLOB connector_zmq_source connectors/zmq*.c*)
+	file(GLOB connector_zmq_header connectors/zmq*.h)
+	set(JSONRPC_DEPENDENCIES ${JSONRPC_DEPENDENCIES} ${ZMQ_LIBRARIES})
+endif()
+
 file(GLOB jsoncpp_header json/*.h)
 
-set(connectors_source ${connector_http_source} ${connector_mongoose_source})
-set(connectors_header ${connector_http_header} ${connector_mongoose_header})
+set(connectors_source ${connector_http_source} ${connector_mongoose_source} ${connector_zmq_source})
+set(connectors_header ${connector_http_header} ${connector_mongoose_header} ${connector_cppzmq_header} ${connector_zmq_header})
 
 
 add_library(jsonrpc SHARED ${jsonrpc_source} ${connectors_source})
@@ -32,7 +39,7 @@ target_link_libraries(jsonrpcStatic ${JSONRPC_DEPENDENCIES})
 
 install(FILES ${jsonrpc_header} DESTINATION include/jsonrpc)
 install(FILES ${jsoncpp_header} DESTINATION include/jsonrpc/json)
-if(HTTP_CONNECTOR)
+if(HTTP_CONNECTOR or ZMQ_CONNECTOR)
 	install(FILES ${connectors_header} DESTINATION include/jsonrpc/connectors)
 endif()
 

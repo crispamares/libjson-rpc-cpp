@@ -2,11 +2,20 @@ cmake_minimum_required(VERSION 2.6)
 project(libjson-rpc-cpp)
 
 SET(HTTP_CONNECTOR YES CACHE BOOL "Include HTTP connector inside library")
+SET(ZMQ_CONNECTOR YES CACHE BOOL "Include ZMQ connector inside library")
+
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 if (HTTP_CONNECTOR)
   find_package(CURL REQUIRED)
   include_directories(${CURL_INCLUDE_DIRS})
   ADD_DEFINITIONS(-DHTTP_CONNECTOR)
+endif()
+
+if (ZMQ_CONNECTOR)
+  find_package(ZMQ REQUIRED)
+  include_directories(${CURL_INCLUDE_DIRS})
+  ADD_DEFINITIONS(-DZMQ_CONNECTOR)
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
